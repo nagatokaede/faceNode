@@ -1,0 +1,310 @@
+
+/*-------------------------- face++ node 人脸融合 ----------------------------*/
+
+
+# 使用 face++ 人脸识别 API & 人脸融合 API 开发上传用户图片返回融合图片 API 
+# 使用工具 node 、 MongoDB
+
+
+
+开发日志：
+
+date：2018-6-25 11:32
+V：face node V0.1
+content: 
+1. 创建文件目录结构，与前期准备
+face node
+    │  index.js
+    │  log.txt
+    │  package.json
+    │
+    ├─api
+    ├─data
+    ├─export
+    ├─import
+    ├─server
+    └─tools
+
+
+date：2018-6-26 13:01
+V：face node V0.1
+content: 
+1. 创建 debug 方法，应用 chalk 修改输出日志类别及终端显示颜色
+2. 创建简单 koa 服务
+└─face node
+    │  index.js
+    │  log.txt
+    │  package.json
+    │
+    ├─api
+    ├─data
+    ├─debug
+    │      log.js
+    │
+    ├─export
+    ├─import
+    ├─server
+    │      server.js
+    │
+    ├─static
+    └─tools
+
+
+date: 2018-6-27 17:49
+V: faceNode V0.2
+content:
+1. 添加全局可变对象 setting.js
+2. 添加 404 错误路由
+3. 添加多文件上传 接口：{
+                            path: /upfile, 
+                            name: file 
+                        }
+4. 添加 form 表单 & ajax 上传文件测试页面
+└─faceNode
+    │  index.js
+    │  log.txt
+    │  package-lock.json
+    │  package.json
+    │  setting.js
+    │
+    ├─api
+    ├─data
+    ├─debug
+    │      log.js
+    │
+    ├─export
+    ├─import
+    │      upfile.js
+    │
+    ├─router
+    │      404.js
+    │      router.js
+    │
+    ├─server
+    │      server.js
+    │
+    ├─static
+    │  └─2018-6-27
+    │          1530092029455_0.jpg
+    │
+    ├─testfile
+    │      fileuptoform.html
+    │      文件上传测试ajax.html
+    │
+    └─tools
+
+
+date: 2018-6-28 17:07
+V: faceNode V0.3
+content:
+1. 修正 ajax 多文件上传文件测试页面
+2. 创建模板连接 MongoDB 
+3. 存储 & 更新，用户 & 上传文件数据
+4. 更新了上传接口：{
+    path: /upfile, 
+    filesName: file, 
+    userId: userId
+}
+
+└─faceNode
+    │  index.js
+    │  log.txt
+    │  package-lock.json
+    │  package.json
+    │  setting.js
+    │
+    ├─api
+    ├─data
+    │  │  conn_mongo.js
+    │  │
+    │  ├─modules
+    │  │      UpFilesInfoModel.js
+    │  │      UserModel.js
+    │  │
+    │  └─tools
+    │          upFiles.js
+    │          userCreate.js
+    │
+    ├─debug
+    │      log.js
+    │
+    ├─export
+    ├─import
+    │      upfile.js
+    │
+    ├─router
+    │      404.js
+    │      router.js
+    │
+    ├─server
+    │      server.js
+    │
+    ├─static
+    │  ├─2018-6-27
+    │  │      1530092029455_0.jpg
+    │  │
+    │  └─2018-6-28
+    ├─testfile
+    │      fileuptoform.html
+    │      文件上传测试ajax.html
+    │
+    └─tools
+
+
+date: 2018-6-30 10:35 
+V: faceNode V0.4
+content:
+1. 接入 face++ 人脸识别接口
+2. 存储人脸识别返回的数据
+
+└─faceNode
+    │  index.js
+    │  log.txt
+    │  package-lock.json
+    │  package.json
+    │  setting.js
+    │
+    ├─data
+    │  │  conn_mongo.js
+    │  │
+    │  ├─modules
+    │  │      UpFilesInfoModel.js
+    │  │      UserModel.js
+    │  │
+    │  └─tools
+    │          upFiles.js
+    │          userCreate.js
+    │
+    ├─debug
+    │      log.js
+    │
+    ├─export
+    ├─faceAPI
+    │  ├─DetectAPI
+    │  │      reqDetectAPI.js
+    │  │
+    │  ├─mergeFaceAPI
+    │  └─tools
+    ├─import
+    │      upfile.js
+    │
+    ├─router
+    │      404.js
+    │      router.js
+    │
+    ├─server
+    │      server.js
+    │
+    ├─static
+    │  ├─2018-6-27
+    │  │      1530092029455_0.jpg
+    │  │
+    │  ├─2018-6-28
+    │  │      1530181886910_2.jpg
+    │  │
+    │  ├─2018-6-29
+    │  │      1530268275272_0.jpg
+    │  │
+    │  └─2018-6-30
+    │         1530325967349_0.jpg
+    │
+    ├─testfile
+    │      fileuptoform.html
+    │      文件上传测试ajax.html
+    │
+    └─tools
+
+
+date: 2018-7-3 14:46  
+V: faceNode V1.0
+content:
+1. 接入 face++ 人脸融合接口
+2. 增加人脸融合路由 API
+3. 增加数据查询模块
+4. 增加衔接人脸识别与人脸融合模块
+5. 增加人脸融合测试页面
+
+└─faceNode
+    │  index.js    启动程序
+    │  log.txt     开发日志
+    │  package-lock.json
+    │  package.json    npm 开发依赖
+    │  setting.js    全局变量与 face++ 账户信息
+    │
+    ├─data
+    │  │  conn_mongo.js    MongoDB 连接程序
+    │  │
+    │  ├─modules
+    │  │      UpFilesInfoModel.js    MongoDB 图片数据结构模板
+    │  │      UserModel.js    MongoDB 用户数据结构模板
+    │  │
+    │  └─tools
+    │          dataFindOne.js    MongoDB 数据查询
+    │          upFiles.js    上传图片时写入数据库
+    │          userCreate.js    创建用户与用户验证
+    │
+    ├─debug
+    │      log.js    粉笔标色显示 console.log
+    │
+    ├─faceAPI
+    │  ├─DetectAPI
+    │  │      reqDetectAPI.js    向 face++ 发出人脸识别请求
+    │  │
+    │  ├─mergeFaceAPI
+    │  │      reqMergeFaceAPI.js    向 face++ 发出人脸融合请求
+    │  │
+    │  └─tools
+    │          dataProcessing.js    处理用户请求人脸融合数据分发个数据库查询模板信息
+    │                               与将融合图像发送给人脸融合请求模块  
+    │
+    ├─import
+    │      upfile.js    fs 创建日期文件夹存储上传的图像
+    │
+    ├─router
+    │      404.js    非开放路由位置显示 404 not found
+    │      router.js    路由管理
+    │
+    ├─server
+    │      server.js    koa 服务
+    │
+    ├─static    上传文件目录
+    │  ├─2018-6-27
+    │  │      1530092029455_0.jpg
+    │  │
+    │  ├─2018-6-28
+    │  │      1530181886910_2.jpg
+    │  │
+    │  ├─2018-6-29
+    │  │      1530268275272_0.jpg
+    │  │
+    │  ├─2018-6-30
+    │  │      1530325967349_0.jpg
+    │  │
+    │  ├─2018-7-2
+    │  │      1530527584775_0.jpg
+    │  │
+    │  └─2018-7-3
+    │          1530599465743_3.jpg
+    │
+    ├─testfile    测试 API 页面
+    │      fileuptoform.html
+    │      mergeFaceAjax.html
+    │      文件上传测试ajax.html
+    │
+    └─tools
+            typeConversion.js    类型转换 stringToObj
+
+/*-------------------------- 到此基础功能模块全部完成 ----------------------------*/
+
+# 为了使程序更健壮接下来是优化与错误处理
+
+
+date: 2018-7-4   
+V: faceNode V1.1
+content:
+1. 用户上传错误信息处理
+
+
+
+
+

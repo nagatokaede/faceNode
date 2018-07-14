@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+        <title>Bootstrap 101 Template</title>
+    <style>
+        #progress{
+            height:10px;
+            width:500px;
+            border: 1px solid gold;
+            position: relative;
+            border-radius: 5px;
+        }
+        #progress .progress-item{
+            height:100%;
+            position: absolute;
+            left:0;
+            top:0;
+            background: chartreuse;
+            border-radius: 5px;
+            transition: width .3s linear;
+        }
+    </style>
+</head>
+<body>
+文件上传框<br>
+<input type="text" id="userId"><br>
+<input type="file" id="file" multiple><br>
+显示进度条<br>
+<div id="progress">
+    <div class="progress-item"></div>
+</div>
+上传成功后的返回内容<br>
+<span id="callback"></span>
+<div id="imgBox">
+融合后图片
+</div>
+</body>
+<script>
+    let strToJson = str => {
+        return JSON.parse(str);
+    }
+    //首先监听input框的变动，选中一个新的文件会触发change事件
+    document.querySelector("#file").addEventListener("change", () => {
+        // 获取文本信息
+        let userId = document.querySelector("#userId").value;
+        console.log(userId);
+        // 获取到选中的文件
+        let files = document.querySelector("#file").files;
+        console.log(files);
+
+
+        // 创建formdata对象
+        let formdata = new FormData(); 
+
+        // 写入文本信息
+        formdata.append("userId", userId);
+        formdata.append("templateId", "5b3ae8d4ae241f543849689c");
+        formdata.append("templatePath", "0");
+        // 这里多次 append file 到同一个key里面
+        for (let i = 0; i < files.length; i++) {
+            formdata.append("file", files[i]);
+        }
+        console.log(formdata.has('userId')&&formdata.has('templateId')&&formdata.has('templatePath')&&formdata.has('file'));
+        // 创建xhr，使用ajax进行文件上传
+        let xmlhttp = new XMLHttpRequest();
+        // 请求方式及地址
+        xmlhttp.open("POST", "http://10.0.0.154:2233/mergeface", true);
+
+        // 回调
+        xmlhttp.onreadystatechange = () => {
+            if (xmlhttp.readyState==4 && xmlhttp.status==200){
+                let data = strToJson(xmlhttp.responseText);
+                document.querySelector("#imgBox").innerHTML = `<img src='data:image/jpeg;base64,${data.result}' />`
+                    document.querySelector("#callback").innerText = xmlhttp.responseText;
+            }
+        }
+
+        // 获取上传的进度
+        xmlhttp.upload.onprogress = (event) => {
+            if(event.lengthComputable){
+                let percent = event.loaded/event.total *100;
+                document.querySelector("#progress .progress-item").style.width = percent+"%";
+            }
+        }
+        // 将formdata上传
+        xmlhttp.send(formdata);
+    });
+</script>
+</html>

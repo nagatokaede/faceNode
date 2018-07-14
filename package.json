@@ -1,0 +1,13 @@
+{
+    "name": "faceNode",
+    "main": "index",
+    "dependencies": {
+        "chalk": "^2.4.1",
+        "koa": "^2.5.1",
+        "koa-bodyparser": "^4.2.1",
+        "koa-multer": "^1.0.2",
+        "koa-router": "^7.4.0",
+        "koa-static": "^5.0.0",
+        "mongoose": "^5.1.7"
+    }
+}
