@@ -44,7 +44,7 @@ upfile.post('/', upload.array('file', 9), async ctx => {
     let upData = await upFiles(ctx, userId); 
 
     // 返回文件名
-    ctx.body = ctx.req.files
+    ctx.body = upData
 
     // 创建文件名后缀数重置
     createFilesNameSuffixNum = 0;
