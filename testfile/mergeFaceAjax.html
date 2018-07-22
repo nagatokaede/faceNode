@@ -28,7 +28,7 @@
 <body>
 文件上传框<br>
 <input type="text" id="userId"><br>
-<input type="file" id="file" multiple><br>
+<input type="file" id="file"><br>
 显示进度条<br>
 <div id="progress">
     <div class="progress-item"></div>
@@ -40,9 +40,6 @@
 </div>
 </body>
 <script>
-    let strToJson = str => {
-        return JSON.parse(str);
-    }
     //首先监听input框的变动，选中一个新的文件会触发change事件
     document.querySelector("#file").addEventListener("change", () => {
         // 获取文本信息
@@ -58,24 +55,22 @@
 
         // 写入文本信息
         formdata.append("userId", userId);
-        formdata.append("templateId", "5b3ae8d4ae241f543849689c");
-        formdata.append("templatePath", "0");
+        formdata.append("templateId", "5b5352009b02262cd4312fe8");
         // 这里多次 append file 到同一个key里面
-        for (let i = 0; i < files.length; i++) {
-            formdata.append("file", files[i]);
-        }
-        console.log(formdata.has('userId')&&formdata.has('templateId')&&formdata.has('templatePath')&&formdata.has('file'));
+        formdata.append("file", files[0]);
+
+
+        console.log(formdata.has('userId')&&formdata.has('templateId')&&formdata.has('file'));
         // 创建xhr，使用ajax进行文件上传
         let xmlhttp = new XMLHttpRequest();
         // 请求方式及地址
-        xmlhttp.open("POST", "http://10.0.0.154:2233/mergeface", true);
+        xmlhttp.open("POST", "http://192.168.1.2:2233/mergeface", true);
 
         // 回调
         xmlhttp.onreadystatechange = () => {
             if (xmlhttp.readyState==4 && xmlhttp.status==200){
-                let data = strToJson(xmlhttp.responseText);
-                document.querySelector("#imgBox").innerHTML = `<img src='data:image/jpeg;base64,${data.result}' />`
-                    document.querySelector("#callback").innerText = xmlhttp.responseText;
+                document.querySelector("#imgBox").innerHTML = `<img src='${xmlhttp.responseText}' />`
+                document.querySelector("#callback").innerText = xmlhttp.responseText;
             }
         }
 

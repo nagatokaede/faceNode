@@ -8,7 +8,7 @@ const querystring = require('querystring')
 const https = require('https');
 
 
-let reqMergeFaceAPI = (template_base64, template_rectangle, merge_base64, merge_rectangle) => {
+let reqMergeFaceAPI = (template_url, template_rectangle, merge_url, merge_rectangle) => {
     // 设置 face++ 接口用户信息
     let faceInfoObj = new Object;
     faceInfoObj.api_key = faceInfo.api_key;
@@ -16,12 +16,12 @@ let reqMergeFaceAPI = (template_base64, template_rectangle, merge_base64, merge_
     faceInfoObj.merge_rate = faceInfo.merge_rate;
 
     // 模板图片
-    faceInfoObj.template_base64 = template_base64;
+    faceInfoObj.template_url = template_url;
     // 模板人脸位置
     faceInfoObj.template_rectangle = template_rectangle;
 
     // 用户图片
-    faceInfoObj.merge_base64 = merge_base64;
+    faceInfoObj.merge_url = merge_url;
     // 用户人脸位置
     faceInfoObj.merge_rectangle = merge_rectangle;
 

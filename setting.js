@@ -5,11 +5,9 @@
 module.exports = {
     // node 服务信息
     server: {
-         hostname: '10.0.0.154', 
+         hostname: '192.168.1.2', 
          post: '2233'
     },
-    // 创建多个文件名时添加后缀用
-    createFilesNameSuffixNum: 0, 
     // face++ API 接口信息
     faceInfo: {
         // 账户信息
@@ -24,5 +22,7 @@ module.exports = {
         // 人脸融合
         // 融合比例，范围 [0,100]。数字越大融合结果包含越多融合图 (merge_url, merge_file, merge_base64 代表图片) 特征。
         'merge_rate': 80
-    }
+    }, 
+    // 规定上传文件的格式
+    UpFileType: ['image/jpg', 'image/jpeg', 'image/png']
 }

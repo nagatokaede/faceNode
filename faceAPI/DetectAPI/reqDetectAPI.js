@@ -48,7 +48,15 @@ let reqDetectAPI = (path) => {
 
             res.on('end', () => {
                 log(4, '响应中已无数据。');
-                resolve(strToJson(data));
+                // 仅返回人脸框数据
+                let dataObj = strToJson(data);
+                log(4, `图像识别人脸矩形框数据类型：${typeof dataObj.faces[0]} \n 数据：${dataObj.faces[0]}`);
+                if (dataObj.faces[0]) {
+                    resolve(dataObj.faces[0].face_rectangle);
+                } else {
+                    resolve(undefined);
+                }
+                
             });
         });
 

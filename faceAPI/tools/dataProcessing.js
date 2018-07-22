@@ -1,42 +1,74 @@
 'use strict'
 
-let faceInfo = require('../../setting').faceInfo;
-const log = require('../../debug/log').log;
+const server = require('../../setting').server;
 
+const log = require('../../debug/log').log;
+const dir = require('../../debug/log').dir;
 
 const UpFilesInfoFindOne = require('../../data/tools/dataFindOne').UpFilesInfoFindOne;
 const reqMergeFaceAPI = require('../mergeFaceAPI/reqMergeFaceAPI');
+
+const fs = require('fs');
+
+
+let urlFun = (urlStr, flag = 1) => {
+    // 处理数据中的图像地址
+    let url_list,url;
+
+    if (flag) {
+        // 网络 url
+        url_list = urlStr.split('\\');
+        url = 'http://' + server.hostname + ':' + server.post + '/' + url_list[2] + '/' + url_list[3] + '/' + url_list[4]
+    } else {
+        // 本地 path
+        url_list = urlStr.split('.');
+        url = url_list[0] + '_merge.' + url_list[1]
+    }
+    log(4, `urlFun: ${url}`);
+    return url  
+}
+
+let faceRectangleFun = fr => {
+    // 处理数据中的人脸框信息
+    let faceRectangle = `${fr.top}, ${fr.left}, ${fr.width}, ${fr.height}`; 
+    return faceRectangle
+}
 
 // 人脸融合请求
 let dataProcessing = async (ctx, upData) => {
     // 请求模板数据预处理
     let templateId = ctx.req.body.templateId;
-    let templatePath = ctx.req.body.templatePath;
-    log(4, `templateId: ${templateId} \ntemplatePath: ${templatePath}`);
-    // 查询数据
-    let template = await UpFilesInfoFindOne(templateId, templatePath);
-    log(4, `template typeof: ${typeof template}`);
-    console.dir(template);
-    // 模板数据处理
-    let template_base64 = template.base64;
 
-    let template_fr = template.detectAPI.faces[0].face_rectangle;
-    log(4, `人脸框数据：${template_fr}`);
-    console.dir(template_fr);
-    let template_rectangle = `${template_fr.top}, ${template_fr.left}, 
-                                ${template_fr.width}, ${template_fr.height}`;
+    // 查询数据
+    let template = await UpFilesInfoFindOne(templateId);
+    
+    // 模板数据处理
+    let template_url = urlFun(template.upFileInfo.filePath);
+    let template_rectangle = faceRectangleFun(template.upFileInfo.faceRectangle);
+
 
     // 用户图像数据处理
-    let merge = upData.upFileInfo.filesPath.path_0;
+    let merge = upData;
 
-    let merge_base64 = merge.base64;
+    let merge_url = urlFun(merge.upFileInfo.filePath);
+    let merge_rectangle = faceRectangleFun(merge.upFileInfo.faceRectangle);
 
-    let merge_fr = merge.detectAPI.faces[0].face_rectangle;
-    let merge_rectangle = `${merge_fr.top}, ${merge_fr.left}, 
-                            ${merge_fr.width},${merge_fr.height}`;
 
     // 调用人脸融合
-    return await reqMergeFaceAPI(template_base64, template_rectangle, merge_base64, merge_rectangle);
+    let MergeData = await reqMergeFaceAPI(template_url, template_rectangle, merge_url, merge_rectangle);
+    let MergeImagePath = urlFun(merge.upFileInfo.filePath, 0);
+    log(4, `存储融合后图片路径: ${MergeImagePath}`);
+
+    return new Promise((resolve, reject) => {
+        fs.writeFile(MergeImagePath, MergeData, err => {
+            if (err) {
+                log(0, `存储融合后图片失败！ ${err}`);
+                resolve(false);
+            } else {
+                resolve(urlFun(MergeImagePath));
+            }
+        });
+    });
 }
 
 module.exports = dataProcessing

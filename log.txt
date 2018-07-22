@@ -299,11 +299,87 @@ content:
 # 为了使程序更健壮接下来是优化与错误处理
 
 
-date: 2018-7-4   
+date: 2018-7-22   
 V: faceNode V1.1
 content:
-1. 用户上传错误信息处理
+1. 上传错误文件类型处理
+2. 上传超出规定文件大小处理（只返回错误信息，文件依然上传，等后续修复）
+3. 修改数据库结构，不再存储文件 base64 数据
+4. 模板上传：{
+                userId: String, 
+                file: image
+            }
+模板返回数据：{
+                "upFileInfo": {
+                    "upFileDate": "2018-07-21T15:30:04.614Z", 
+                    "fileName":"1532187136345.jpg", 
+                    "filePath":"faceNode\\static\\qihara\\2018-7-21\\1532187136345.jpg", 
+                    "fileType":"image/jpeg", 
+                    "faceRectangle":{"width":51,"top":61,"left":90,"height":51}
+                }, 
+                "_id":"5b5352009b02262cd4312fe8", 
+                "userId":"5b52f56382470440141a8fd2", 
+                "__v":0
+            }
+5. 合成图像：{
+                userId: String, 
+                templateId: String, 
+                file: image
+            }
+合成图像返回数据： MergeImageURL： String
 
+└─faceNode
+    │  index.js
+    │  log.txt
+    │  package.json
+    │  setting.js
+    │
+    ├─data
+    │  │  conn_mongo.js
+    │  │
+    │  ├─modules
+    │  │      UpFilesInfoModel.js
+    │  │      UserModel.js
+    │  │
+    │  └─tools
+    │          dataFindOne.js
+    │          upFiles.js
+    │          userCreate.js
+    │
+    ├─debug
+    │      log.js
+    │      responseDebug.js
+    │
+    ├─export
+    ├─faceAPI
+    │  ├─DetectAPI
+    │  │      reqDetectAPI.js
+    │  │
+    │  ├─mergeFaceAPI
+    │  │      reqMergeFaceAPI.js
+    │  │
+    │  └─tools
+    │          dataProcessing.js
+    │
+    ├─import
+    │      upfile.js
+    │
+    ├─router
+    │      404.js
+    │      router.js
+    │
+    ├─server
+    │      server.js
+    │
+    ├─static
+    │
+    ├─testfile
+    │      fileuptoform.html
+    │      mergeFaceAjax.html
+    │      文件上传测试ajax.html
+    │
+    └─tools
+            typeConversion.js
 
 
 

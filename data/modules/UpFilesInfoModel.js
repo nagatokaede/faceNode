@@ -11,37 +11,17 @@ require('../conn_mongo');
  * userId: 创建 user 时 MongoDB 自动创建的 id，关联 user
  * upFileInfo: {
  *     upFileDate: 上传文件的日期, 
- *     filesNum: 上传文件数量
- *     filesPath: 文件保存路径
+ *     fileName: 文件名
+ *     filePath: 文件保存路径
+ *     fileType: 文件类型
+ *     faceRectangle: { 识别人脸框
+ *          "width": 140,
+ *          "top": 89,
+ *          "left": 104,
+ *          "height": 141
+ *     }
  * }
  */
-
-let filesPathFun = () => {
-    let path = {
-        fileInfo: {
-            fieldname: String,
-            originalname: String,
-            encoding: String,
-            mimetype: String,
-            destination: String,
-            filename: String,
-            path: String,
-            size: Number
-        }, 
-        detectAPI: Object, 
-        base64: String
-    }
-
-    let filesPath = new Object;
-
-    for (let i = 0; i < 9; i++){
-        filesPath[`path_${i}`] = path;
-    }
-
-    return filesPath
-}
-
-let filesPath = filesPathFun();
 
 // 将 mongoose.Schema 赋值给一个变量来定义一个数据约束
 let upFileInfoSchema = mongoose.Schema({
@@ -51,8 +31,10 @@ let upFileInfoSchema = mongoose.Schema({
             type: Date, 
             default: new Date()
         }, 
-        filesNum: Number, 
-        filesPath: filesPath 
+        fileName: String, 
+        filePath: String, 
+        fileType: String, 
+        faceRectangle: Object, 
     }
 });
 

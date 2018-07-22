@@ -37,6 +37,9 @@
 <span id="callback"></span>
 </body>
 <script>
+    let strToJson = str => {
+        return JSON.parse(str);
+    }
     //首先监听input框的变动，选中一个新的文件会触发change事件
     document.querySelector("#file").addEventListener("change", () => {
         // 获取文本信息
@@ -60,12 +63,15 @@
         // 创建xhr，使用ajax进行文件上传
         let xmlhttp = new XMLHttpRequest();
         // 请求方式及地址
-        xmlhttp.open("POST", "http://10.0.0.154:2233/upfile", true);
+        xmlhttp.open("POST", "http://192.168.1.2:2233/test", true);
 
         // 回调
         xmlhttp.onreadystatechange = () => {
             if (xmlhttp.readyState==4 && xmlhttp.status==200){
                 document.querySelector("#callback").innerText = xmlhttp.responseText;
+                let data = strToJson(xmlhttp.responseText);
+                let userId = data._id
+                console.log(userId);
             }
         }
 

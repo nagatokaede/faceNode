@@ -1,6 +1,7 @@
 'use strict'
 
 const log = require('../../debug/log').log;
+const dir = require('../../debug/log').dir;
 const strToJson = require('../../tools/typeConversion').strToJson;
 
 const UserModel = require('../modules/UserModel');
@@ -17,8 +18,8 @@ let UpFilesInfoFindOne = (imgId, path) => {
             } else {
                 if (docs) {
                     log(4, `图片数据库查询结果类型 ${typeof docs}`);
-                    console.dir(docs._doc.upFileInfo.filesPath[`path_${path}`]);
-                    resolve(docs._doc.upFileInfo.filesPath[`path_${path}`]);
+                    dir(docs._doc, `数据查询结果`);
+                    resolve(docs._doc);
                 } else {
                     log(2, `图像数据查询 userId: ${userId} 不存在`);
                     reject(`image data not find  userId: ${userId}`);
