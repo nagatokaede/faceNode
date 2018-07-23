@@ -58,9 +58,11 @@ let dataProcessing = async (ctx, upData) => {
     let MergeData = await reqMergeFaceAPI(template_url, template_rectangle, merge_url, merge_rectangle);
     let MergeImagePath = urlFun(merge.upFileInfo.filePath, 0);
     log(4, `存储融合后图片路径: ${MergeImagePath}`);
+    
+    let bufferdata = new Buffer(MergeData.result, 'base64');
 
     return new Promise((resolve, reject) => {
-        fs.writeFile(MergeImagePath, MergeData, err => {
+        fs.writeFile(MergeImagePath, bufferdata, err => {
             if (err) {
                 log(0, `存储融合后图片失败！ ${err}`);
                 resolve(false);
