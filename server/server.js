@@ -7,6 +7,7 @@ const koa = require('koa');
 const Path = require('path');
 const Static = require('koa-static');
 const bodyParser = require('koa-bodyparser');
+const co
 
 
 const router = require('../router/router');

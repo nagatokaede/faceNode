@@ -15,6 +15,7 @@ const upFiles = require('../data/tools/upFiles');
 const dataProcessing = require('../faceAPI/tools/dataProcessing');
 
 
+
 let logPath = (ctx, method) => {
     log(4, `请求方式 ${method} 请求地址 ${ctx.url} 并返回数据成功！`);
 }
@@ -46,7 +47,7 @@ test.post('/', async ctx => {
         } else {
         // 数据库记录信息
             log(3, `上传文件正常`);
-            let userId = await userCreate(ctx);
+            let userId = await userCreate(ctx); 
             let upData = await upFiles(ctx, userId); 
 
             return upData
@@ -139,6 +140,21 @@ mergeface.post('/', async ctx => {
     logPath(ctx, 'POST');
 });
 
+// 更换模板图片融合接口 ---------------------------------------
+const changeFaceMerge = new Router();
+
+changeFaceMerge.post('/', async ctx => {
+    let mergeFace = await dataProcessing(ctx);
+
+    if (mergeFace) {
+        ctx.body = mergeFace
+    } else {
+        ctx.status = 500
+        return ERRORMSG.SYSTEMERROR.message
+    }
+    logPath(ctx, 'POST');
+});
+
 
 // 文件管理后台接口 -------------------------------------------
 const fileShow = new Router();
@@ -156,6 +172,7 @@ let router = new Router();
 router.use('/test', test.routes(), test.allowedMethods());
 router.use('/upfile', upfile.routes(), upfile.allowedMethods());
 router.use('/mergeface', mergeface.routes(), mergeface.allowedMethods());
+router.use('/changeFaceMerge', changeFaceMerge.routes(), changeFaceMerge.allowedMethods());
 router.use('/admin', fileShow.routes(), fileShow.allowedMethods());
 
 module.exports = router

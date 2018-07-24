@@ -9,7 +9,7 @@ const UpFilesInfoModel = require('../modules/UpFilesInfoModel');
 
 
 // 查询单个图片信息
-let UpFilesInfoFindOne = (imgId, path) => {
+let UpFilesInfoFindOne = (imgId) => {
     return new Promise((resolve, reject) => {
         UpFilesInfoModel.findOne({'_id': imgId}, (err, docs) => {
             if (err) {
@@ -21,8 +21,8 @@ let UpFilesInfoFindOne = (imgId, path) => {
                     dir(docs._doc, `数据查询结果`);
                     resolve(docs._doc);
                 } else {
-                    log(2, `图像数据查询 userId: ${userId} 不存在`);
-                    reject(`image data not find  userId: ${userId}`);
+                    log(2, `图像数据查询 imgId: ${imgId} 不存在`);
+                    reject(`image data not find  imgId: ${imgId}`);
                 }
             }
         });

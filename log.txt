@@ -383,4 +383,8 @@ content:
 
 
 
-
+date: 2018-7-24   
+V: faceNode V1.2
+content:
+1. 修复了部分 bug 已成功部署试用
+2. ！！需添加 base64 文件上传接口
