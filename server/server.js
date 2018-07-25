@@ -7,13 +7,16 @@ const koa = require('koa');
 const Path = require('path');
 const Static = require('koa-static');
 const bodyParser = require('koa-bodyparser');
-const co
+const cors = require('koa-cors');
 
 
 const router = require('../router/router');
 const page404 = require('../router/404');
 
 const app = new koa();
+
+// 开放跨域 ajax 请求
+app.use(cors());
 
 // 静态资源目录对于相对入口文件server.js的路径
 const staticPath = ['../testfile', '../static'];

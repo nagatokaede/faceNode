@@ -22,12 +22,13 @@
 
             // 写入文本信息
             formdata.append("userId", 'nagato');
+            formdata.append("templateId", "5b57fea4104c5d2f98a3249b");
             formdata.append("dataBase64", dataBase64);
 
             // 创建xhr，使用ajax进行文件上传
             let xmlhttp = new XMLHttpRequest();
             // 请求方式及地址
-            xmlhttp.open("POST", "http://10.0.0.156:2233/test", true);
+            xmlhttp.open("POST", "http://10.0.0.156:2233/mergeface", true);
 
             // 回调
             xmlhttp.onreadystatechange = () => {

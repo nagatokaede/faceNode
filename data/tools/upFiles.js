@@ -10,10 +10,17 @@ const reqDetectAPI = require('../../faceAPI/DetectAPI/reqDetectAPI');
 
 
 // 保存上传文件信息
-let upFiles = async (ctx, userId) => {
+let upFiles = async (data, userId, flag = false) => {
     // 基本参数
-    let files = ctx.req.files[0];
-    dir(files, `ctx.req.files[0]`);
+    let files;
+    if (flag) {
+        files = data;
+    } else {
+        files = data.req.files[0];
+    }
+
+    dir(files, `图像基本信息`);
+
 
     // 调用 face++ 人脸识别 API 
     let faceRectangle = await reqDetectAPI(files.path);
@@ -48,6 +55,5 @@ let upFiles = async (ctx, userId) => {
 
     });
 } 
-
 
 module.exports = upFiles

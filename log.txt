@@ -388,3 +388,71 @@ V: faceNode V1.2
 content:
 1. 修复了部分 bug 已成功部署试用
 2. ！！需添加 base64 文件上传接口
+
+
+date: 2018-7-25
+V: faceNode V1.3
+content:
+1. 添加 base64 文件上传接口
+2. 添加 base64 测试文件
+3. ios 手机拍照横向修正
+4. 图像大小上传预处理
+
+└─faceNode
+    │  index.js
+    │  log.txt
+    │  package.json
+    │  setting.js
+    │
+    ├─data
+    │  │  conn_mongo.js
+    │  │
+    │  ├─modules
+    │  │      UpFilesInfoModel.js
+    │  │      UserModel.js
+    │  │
+    │  └─tools
+    │          dataFindOne.js
+    │          upFiles.js
+    │          userCreate.js
+    │
+    ├─debug
+    │      log.js
+    │      responseDebug.js
+    │
+    ├─faceAPI
+    │  ├─DetectAPI
+    │  │      reqDetectAPI.js
+    │  │
+    │  ├─mergeFaceAPI
+    │  │      reqMergeFaceAPI.js
+    │  │
+    │  └─tools
+    │          dataProcessing.js
+    │
+    ├─import
+    │  │  saveBase64File.js
+    │  │  upfile.js
+    │  │
+    │  └─tools
+    │          createFile.js
+    │
+    ├─router
+    │      404.js
+    │      router.js
+    │
+    ├─server
+    │      server.js
+    │
+    ├─static
+    │      log.txt
+    │
+    ├─testfile
+    │      file_up_ajax.html
+    │      Image_preprocessing_up.html
+    │      merge_face_ajax.html
+    │      merge_Image_preprocessing_up.html
+    │      small-exif.js
+    │
+    └─tools
+            typeConversion.js

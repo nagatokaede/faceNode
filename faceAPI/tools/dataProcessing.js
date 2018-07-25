@@ -75,8 +75,14 @@ let dataProcessing = async (ctx, upData = 0) => {
 
 
     // 调用人脸融合
+    log(4, `template_url: ${template_url}, 
+            \ntemplate_rectangle: ${template_rectangle}, 
+            \nmerge_url: ${merge_url}, 
+            \nmerge_rectangle: ${merge_rectangle}`);
     let MergeData = await reqMergeFaceAPI(template_url, template_rectangle, merge_url, merge_rectangle);
     log(4, `存储融合后图片路径: ${MergeImagePath}`);
+    log(4, `base64 data: \n${MergeData.result}`);
+    dir(MergeData, 'merge face res obj!');
 
     let bufferdata = new Buffer(MergeData.result, 'base64');
 
