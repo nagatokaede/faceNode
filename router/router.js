@@ -34,7 +34,7 @@ test.post('/', async ctx => {
     // post 请求测试
     ctx.body = await upload(ctx, async err => {
         let dataMsg = await saveBase64(ctx);
-        dir(dataMsg, 'saveBase64 返回信息！');
+        //dir(dataMsg, 'saveBase64 返回信息！');
         let userId = await userCreate(ctx);
         let upData = await upFiles(dataMsg, userId, true); 
         if (upData == ERRORMSG.FACEERROR.message) {
@@ -51,29 +51,6 @@ test.post('/', async ctx => {
 const upfile = new Router();
 
 upfile.post('/', async ctx => {
-    // post 请求测试
-    // ctx.body = await upload(ctx, async err => {
-       
-    //     log(4, `ctx.req.fileValidationError2: ${ctx.req.fileValidationError}`);
-    //     // 上传文件错误处理
-    //     if (ctx.req.fileValidationError) {
-    //         // 上传文件发生错误
-    //         log(1, `上传文件类型发生错误!!`);
-    //         ctx.status = 400
-    //         return ERRORMSG.FILETYPEERROR.message
-    //     } else if (ctx.req.files[0].size > 2 * 1024 * 1024) {
-    //         log(1, `上传文件大小发生错误!`);
-    //         ctx.status = 400
-    //         return ERRORMSG.SIZEERROR.message
-    //     } else {
-    //     // 数据库记录信息
-    //         log(3, `上传文件正常`);
-    //         let userId = await userCreate(ctx);
-    //         let upData = await upFiles(ctx, userId); 
-
-    //         return upData
-    //     }
-    // });
     ctx.body = await upload(ctx, async err => {
         let dataMsg = await saveBase64(ctx);
         dir(dataMsg, 'saveBase64 返回信息！');
@@ -120,40 +97,6 @@ mergeface.post('/', async ctx => {
                 return ERRORMSG.SYSTEMERROR.message
             }
         }
-       
-        // log(4, `ctx.req.fileValidationError2: ${ctx.req.fileValidationError}`);
-        // // 上传文件错误处理
-        // if (ctx.req.fileValidationError) {
-        //     // 上传文件发生错误
-        //     log(1, `上传文件类型发生错误!!`);
-        //     ctx.status = 400
-        //     return ERRORMSG.FILETYPEERROR.message
-        // } else if (ctx.req.files[0].size > 2 * 1024 * 1024) {
-        //     log(1, `上传文件大小发生错误!`);
-        //     ctx.status = 400
-        //     return ERRORMSG.SIZEERROR.message
-        // } else {
-        //     log(3, `上传文件正常`);
-        //     // 记录用户信息
-        //     let userId = await userCreate(ctx);
-        //     // 调用人脸识别 API
-        //     let upData = await upFiles(ctx, userId); 
-
-        //     if (upData == ERRORMSG.FACEERROR.message) {
-        //         log(1, `上传图像中未能找到人脸信息!`);
-        //         ctx.status = 400
-        //         return upData
-        //     } else {
-        //         let mergeFace = await dataProcessing(ctx, upData);
-        //         if (mergeFace) {
-        //             return mergeFace
-        //         } else {
-        //             ctx.status = 500
-        //             return ERRORMSG.SYSTEMERROR.message
-        //         }
-
-        //     }
-        // }
     });
 
     logPath(ctx, 'POST');

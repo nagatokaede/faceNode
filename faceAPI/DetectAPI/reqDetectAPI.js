@@ -42,7 +42,7 @@ let reqDetectAPI = (path) => {
             log(4, `请求头：\nres.headers`);
             res.setEncoding('utf8');
             res.on('data', (chunk) => {
-                log(4, `响应主体: ${chunk}`);
+                log(4, `响应主体 +1`);
                 data += chunk;
             });
 
@@ -50,12 +50,14 @@ let reqDetectAPI = (path) => {
                 log(4, '响应中已无数据。');
                 // 仅返回人脸框数据
                 let dataObj = strToJson(data);
-                log(4, `图像识别人脸矩形框数据类型：${typeof dataObj.faces[0]} \n 数据：${dataObj.faces[0]}`);
-                if (dataObj.faces[0]) {
-                    resolve(dataObj.faces[0].face_rectangle);
+                
+                dir(dataObj.faces, `人脸框数据`);
+                if (dataObj.error_message) {
+                    log(2, `人脸识别请求发生错误！`);
+                    resolve(dataObj);
                 } else {
-                    resolve(undefined);
-                }
+                    resolve(dataObj.faces[0]);
+                }  
                 
             });
         });

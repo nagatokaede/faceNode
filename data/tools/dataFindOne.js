@@ -34,7 +34,7 @@ let UserFindOne = (userId) => {
     return new Promise((resolve, reject) => {
         UserModel.findOne({'userId': userId}, (err, docs) => {
             if (err) {
-                log(1, `数据查询失败：\n${err}`);
+                log(1, `用户查询失败：\n${err}`);
                 reject(err);
             } else {
                 if (docs) {

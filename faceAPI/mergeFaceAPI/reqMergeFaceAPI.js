@@ -49,13 +49,19 @@ let reqMergeFaceAPI = (template_url, template_rectangle, merge_url, merge_rectan
             log(4, `请求头：\nres.headers`);
             res.setEncoding('utf8');
             res.on('data', (chunk) => {
-                log(4, `响应主体: ${chunk}`);
+                log(4, `响应主体 +1`);
                 data += chunk;
             });
 
             res.on('end', () => {
                 log(4, '响应中已无数据。');
-                resolve(strToJson(data));
+                let resData = strToJson(data);
+                if (resData.error_message) {
+                    log(2, `人脸融合请求发生错误: ${resData.error_message}`)
+                } else {
+                    log(3, `人脸融合请求成功！`);
+                }
+                resolve(resData);
             });
         });
 

@@ -35,7 +35,7 @@ let upFiles = async (data, userId, flag = false) => {
                     fileName: files.filename, 
                     filePath: files.path, 
                     fileType: files.mimetype, 
-                    faceRectangle: faceRectangle 
+                    faceRectangle: faceRectangle.face_rectangle
                 }
             });
 
