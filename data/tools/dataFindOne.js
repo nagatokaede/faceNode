@@ -12,19 +12,19 @@ const UpFilesInfoModel = require('../modules/UpFilesInfoModel');
 let UpFilesInfoFindOne = (imgId) => {
     return new Promise((resolve, reject) => {
         UpFilesInfoModel.findOne({'_id': imgId}, (err, docs) => {
-            if (err) {
+            if (err) { // 数据查询失败
                 log(1, `数据查询失败：\n${err}`);
-                reject(err);
-            } else {
-                if (docs) {
-                    log(4, `图片数据库查询结果类型 ${typeof docs}`);
-                    dir(docs._doc, `数据查询结果`);
-                    resolve(docs._doc);
-                } else {
-                    log(2, `图像数据查询 imgId: ${imgId} 不存在`);
-                    reject(`image data not find  imgId: ${imgId}`);
-                }
+                resolve(false);
+            } 
+
+            if (!docs) { // imgId 不存在
+                log(1, `图像数据查询 imgId: ${imgId} 不存在`);
+                resolve(false);
             }
+
+            // 查询数据成功
+            dir(docs._doc, `数据查询结果`);
+            resolve(docs._doc);
         });
     });
 }
@@ -33,17 +33,19 @@ let UpFilesInfoFindOne = (imgId) => {
 let UserFindOne = (userId) => {
     return new Promise((resolve, reject) => {
         UserModel.findOne({'userId': userId}, (err, docs) => {
-            if (err) {
+            if (err) { // 数据查询失败
                 log(1, `用户查询失败：\n${err}`);
-                reject(err);
-            } else {
-                if (docs) {
-                    resolve(docs);
-                } else {
-                    log(2, `用户数据查询 userId: ${userId} 不存在`);
-                    reject(`user data not find  userId: ${userId}`);
-                }
+                resolve(false);
+            } 
+
+            if (!docs) { // userId 不存在
+                log(1, `用户数据查询 userId: ${userId} 不存在`);
+                resolve(false);
             }
+
+            // 查询数据成功
+            dir(docs._doc, `数据查询结果`);
+            resolve(docs._doc);
         });
     });
 }

@@ -57,10 +57,11 @@ let reqMergeFaceAPI = (template_url, template_rectangle, merge_url, merge_rectan
                 log(4, '响应中已无数据。');
                 let resData = strToJson(data);
                 if (resData.error_message) {
-                    log(2, `人脸融合请求发生错误: ${resData.error_message}`)
-                } else {
-                    log(3, `人脸融合请求成功！`);
+                    log(1, `人脸融合请求发生错误: ${resData.error_message}`);
+                    resolve(false);
                 }
+
+                log(3, `人脸融合请求成功！`);
                 resolve(resData);
             });
         });

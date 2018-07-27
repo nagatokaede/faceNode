@@ -456,3 +456,9 @@ content:
     │
     └─tools
             typeConversion.js
+
+
+date: 2018-7-26
+V: faceNode V2.0 
+content:
+1. 完成所有错误处理及前端错误返回结果

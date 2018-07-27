@@ -83,7 +83,7 @@ let log = (level, msg) => {
             }
             break;
         default:
-            log(msg);
+            console.log(msg);
     }
 }
 

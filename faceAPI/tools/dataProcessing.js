@@ -13,26 +13,23 @@ const fs = require('fs');
 
 let urlFun = (urlStr, flag = 1, templateId = 0) => {
     // 处理数据中的图像地址
-    let url_list,url;
+    let url_list;
 
     if (flag) {
         // 网络 url
-        url_list = urlStr.split('\\');
-        url = 'http://' + server.hostname + ':' + server.post + '/' + url_list[2] + '/' + url_list[3] + '/' + url_list[4]
-    } else {
-        // 本地 path
-        if (templateId) {
-            // 更换模板
-            url_list = urlStr.split('.');
-            url = url_list[0] + `_merge_${templateId}.` + url_list[1]
-        } else {
-            // 合成图片
-            url_list = urlStr.split('.');
-            url = url_list[0] + '_merge.' + url_list[1]
-        }
+        url_list = urlStr.split('\\'); // Win 版本
+        //url_list = urlStr.split('/'); // Linux 版本
+        return 'http://' + server.hostname + ':' + server.post + '/' + url_list[2] + '/' + url_list[3] + '/' + url_list[4]
     } 
-    log(4, `urlFun: ${url}`);
-    return url  
+
+    // 本地 path
+    url_list = urlStr.split('.');
+    if (templateId) { // 更换模板合成图像
+        return url_list[0] + `_merge_${templateId}.` + url_list[1]
+    } 
+
+    // 合成图片
+    return url_list[0] + '_merge.' + url_list[1]
 }
 
 let faceRectangleFun = fr => {
@@ -48,6 +45,10 @@ let dataProcessing = async (ctx, upData = 0) => {
 
     // 查询数据
     let template = await UpFilesInfoFindOne(templateId);
+    if (!template) { // 查询模板数据失败
+        log(1, `查询模板数据失败`);
+        return false
+    }
     
     // 模板数据处理
     let template_url = urlFun(template.upFileInfo.filePath);
@@ -57,16 +58,22 @@ let dataProcessing = async (ctx, upData = 0) => {
     // 用户图像数据处理
     let merge = upData;
     let mergeId,MergeImagePath;
-    if (upData) {
+    if (merge) {
         // 合成图像
         log(4, '合成图像被调用');
         mergeId = merge._id
         MergeImagePath = urlFun(merge.upFileInfo.filePath, 0);
     } else {
         // 更换模板
-        log(4, '跟换模板被调用');
+        log(4, '更换模板被调用');
         mergeId = ctx.request.body.userId;
+
         merge = await UpFilesInfoFindOne(mergeId);
+        if (!merge) { // 查询合成图像数据失败
+            log(1, `查询合成图像数据失败`);
+            return false
+        }
+
         MergeImagePath = urlFun(merge.upFileInfo.filePath, 0, templateId);
     }
 
@@ -79,24 +86,29 @@ let dataProcessing = async (ctx, upData = 0) => {
             \ntemplate_rectangle: ${template_rectangle}, 
             \nmerge_url: ${merge_url}, 
             \nmerge_rectangle: ${merge_rectangle}`);
+
     let MergeData = await reqMergeFaceAPI(template_url, template_rectangle, merge_url, merge_rectangle);
+    if (!MergeData) { // 人脸融合失败
+        resolve(false);
+    } 
+
     log(4, `存储融合后图片路径: ${MergeImagePath}`);
-    log(4, `base64 data: \n${MergeData.result}`);
     dir(MergeData, 'merge face res obj!');
 
-    let bufferdata = new Buffer(MergeData.result, 'base64');
-
     return new Promise((resolve, reject) => {
-        fs.writeFile(MergeImagePath, bufferdata, err => {
-            if (err) {
-                log(0, `存储融合后图片失败！ ${err}`);
+        // 将返回的 base64 数据转为 Buffer 
+        let bufferdata = new Buffer(MergeData.result, 'base64');
+        fs.writeFile(MergeImagePath, bufferdata, err => { // 写入图像
+            if (err) { // 存储融合后保存图片失败！
+                log(0, `存储融合后保存图片失败！ ${err}`);
                 resolve(false);
-            } else {
-                resolve({
-                    "mergeId": mergeId,
-                    "imgurl": urlFun(MergeImagePath)
-                });
-            }
+            } 
+
+            // 保存图像并返回 {mergeId: String, imgurl: String}
+            resolve({
+                "mergeId": mergeId,
+                "imgurl": urlFun(MergeImagePath)
+            });
         });
     });
 }

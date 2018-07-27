@@ -18,6 +18,6 @@ mongoose.connection.once('open', (err) => {
 // 断开
 mongoose.connection.once('close', (err) => {
    if (!err) { 
-        log(1, `数据库已断开！！`);
+        log(0, `数据库已断开！！`);
     }
 });

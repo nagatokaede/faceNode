@@ -6,7 +6,6 @@ const log = require('../debug/log').log;
 const dir = require('../debug/log').dir;
 const ERRORMSG = require('../debug/responseDebug');
 
-const fs = require('fs');
 const multer = require('koa-multer');
 
 const createFile = require('./tools/createFile');
@@ -45,10 +44,10 @@ let upload = multer({
             log(4, `ctx.fileValidationError1: ${ctx.fileValidationError}`);
             return cb(null, false, new Error(ERRORMSG.FILETYPEERROR.message));
 
-        } else {
-            log(3, `合法的文件类型`);
-            cb(null, true);
         }
+         
+        log(3, `合法的文件类型`);
+        return cb(null, true);
     }
 }).array('file', 1);
 
