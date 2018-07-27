@@ -42,6 +42,7 @@ let faceRectangleFun = fr => {
 let dataProcessing = async (ctx, upData = 0) => {
     // 请求模板数据预处理
     let templateId = ctx.request.body.templateId || ctx.req.body.templateId;
+    log(4, `templateId: ${templateId}`);
 
     // 查询数据
     let template = await UpFilesInfoFindOne(templateId);
@@ -67,6 +68,7 @@ let dataProcessing = async (ctx, upData = 0) => {
         // 更换模板
         log(4, '更换模板被调用');
         mergeId = ctx.request.body.userId;
+        log(4, `mergeId: ${mergeId}`);
 
         merge = await UpFilesInfoFindOne(mergeId);
         if (!merge) { // 查询合成图像数据失败
