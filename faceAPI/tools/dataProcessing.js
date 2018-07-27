@@ -98,7 +98,7 @@ let dataProcessing = async (ctx, upData = 0) => {
 
     return new Promise((resolve, reject) => {
         // 将返回的 base64 数据转为 Buffer 
-        let bufferdata = new Buffer(MergeData.result, 'base64');
+        let bufferdata = new Buffer.from(MergeData.result, 'base64');
         fs.writeFile(MergeImagePath, bufferdata, err => { // 写入图像
             if (err) { // 存储融合后保存图片失败！
                 log(0, `存储融合后保存图片失败！ ${err}`);
