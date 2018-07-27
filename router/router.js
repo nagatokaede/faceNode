@@ -126,9 +126,9 @@ mergeface.post('/', async ctx => {
 const changeFaceMerge = new Router();
 
 changeFaceMerge.post('/', async ctx => {
-    ctx.body = ctx => {
+    ctx.body = await upload(ctx, async err => {
         return await merge(ctx)
-    }
+    });
     logPath(ctx, 'POST');
 });
 
