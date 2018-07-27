@@ -95,7 +95,6 @@ let dataProcessing = async (ctx, upData = 0) => {
     } 
 
     log(4, `存储融合后图片路径: ${MergeImagePath}`);
-    dir(MergeData, 'merge face res obj!');
 
     return new Promise((resolve, reject) => {
         // 将返回的 base64 数据转为 Buffer 
