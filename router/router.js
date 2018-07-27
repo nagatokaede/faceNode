@@ -40,7 +40,7 @@ let detect = async ctx => { // 人脸识别等一系列操作
         }
 
         // ------ 请求人脸识别 ------
-        let faceRectangle = await reqDetectAPI(files.path);
+        let faceRectangle = await reqDetectAPI(dataMsg.path);
         // 返回可能性{ 数据：Obj, 错误1：false, 错误2: faceRectangle.error_message}
         if (!faceRectangle) { // 未能找到人脸信息
             ctx.status = 400
