@@ -59,13 +59,12 @@ let dataProcessing = async (ctx, upData = 0) => {
     // 用户图像数据处理
     let merge = upData;
     let mergeId,MergeImagePath;
-    if (merge) {
-        // 合成图像
+    if (merge) { // 合成图像
         log(4, '合成图像被调用');
         mergeId = merge._id
         MergeImagePath = urlFun(merge.upFileInfo.filePath, 0);
-    } else {
-        // 更换模板
+        
+    } else { // 更换模板
         log(4, '更换模板被调用');
         mergeId = ctx.request.body.userId;
         log(4, `mergeId: ${mergeId}`);
@@ -91,7 +90,7 @@ let dataProcessing = async (ctx, upData = 0) => {
 
     let MergeData = await reqMergeFaceAPI(template_url, template_rectangle, merge_url, merge_rectangle);
     if (!MergeData) { // 人脸融合失败
-        resolve(false);
+        return false
     } 
 
     log(4, `存储融合后图片路径: ${MergeImagePath}`);
@@ -100,16 +99,16 @@ let dataProcessing = async (ctx, upData = 0) => {
         // 将返回的 base64 数据转为 Buffer 
         let bufferdata = new Buffer.from(MergeData.result, 'base64');
         fs.writeFile(MergeImagePath, bufferdata, err => { // 写入图像
-            if (err) { // 存储融合后保存图片失败！
+            if (err) { 
                 log(0, `存储融合后保存图片失败！ ${err}`);
                 resolve(false);
-            } 
-
-            // 保存图像并返回 {mergeId: String, imgurl: String}
-            resolve({
-                "mergeId": mergeId,
-                "imgurl": urlFun(MergeImagePath)
-            });
+                
+            } else { // 保存图像并返回 {mergeId: String, imgurl: String}
+                resolve({
+                    "mergeId": mergeId,
+                    "imgurl": urlFun(MergeImagePath)
+                });
+            }
         });
     });
 }
