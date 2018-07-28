@@ -32,14 +32,14 @@ let upFiles = async (data, userId, faceRectangle, flag = false) => {
 
         // 保存数据
         createInfo.save(err => {
-            if (err) { // 存入上传图像信息失败！
+            if (err) { 
                 log(0, `存入上传图像信息失败！ ${err}`); 
                 resolve(false);
+                
+            } else {
+                log(3, `上传图像信息保存成功！！`);
+                resolve(createInfo);
             }
-
-            // 上传图像信息保存成功！！
-            log(3, `上传图像信息保存成功！！`);
-            resolve(createInfo);
         });
     });
 } 
