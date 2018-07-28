@@ -49,7 +49,7 @@ let reqMergeFaceAPI = (template_url, template_rectangle, merge_url, merge_rectan
             log(4, `请求头：\nres.headers`);
             res.setEncoding('utf8');
             res.on('data', (chunk) => {
-                log(4, `响应主体 +1`);
+                process.stdout.write("*");
                 data += chunk;
             });
 
@@ -59,16 +59,17 @@ let reqMergeFaceAPI = (template_url, template_rectangle, merge_url, merge_rectan
                 if (resData.error_message) {
                     log(1, `人脸融合请求发生错误: ${resData.error_message}`);
                     resolve(false);
+                    
+                } else {
+                    log(3, `人脸融合请求成功！`);
+                    resolve(resData);
                 }
-
-                log(3, `人脸融合请求成功！`);
-                resolve(resData);
             });
         });
 
         req.on('error', (e) => {
-            console.error(`请求遇到问题: ${e.message}`);
-            reject(e);
+            console.error(`人脸融合请求遇到问题: ${e.message}`);
+            resolve(false);
         });
 
         // 写入数据到请求主体
