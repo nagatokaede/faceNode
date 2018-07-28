@@ -66,7 +66,7 @@ let dataProcessing = async (ctx, upData = 0) => {
         
     } else { // 更换模板
         log(4, '更换模板被调用');
-        mergeId = ctx.request.body.userId;
+        mergeId = ctx.request.body.userId || ctx.req.body.userId;
         log(4, `mergeId: ${mergeId}`);
 
         merge = await UpFilesInfoFindOne(mergeId);
