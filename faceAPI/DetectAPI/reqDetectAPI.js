@@ -42,7 +42,7 @@ let reqDetectAPI = (path) => {
             log(4, `请求头：\n${res.headers}`);
             res.setEncoding('utf8');
             res.on('data', (chunk) => {
-                process.stdout.write("=");
+                process.stdout.write("*");
                 data += chunk;
             });
 
@@ -67,7 +67,7 @@ let reqDetectAPI = (path) => {
         });
 
         req.on('error', (e) => {
-            console.error(`请求遇到问题: ${e.message}`);
+            console.error(`人脸识别请求遇到问题: ${e.message}`);
             resolve(false);
         });
 
