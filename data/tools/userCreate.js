@@ -13,27 +13,30 @@ let dataProcessing = (doc, userId, resolve, reject) => {
             if (err) {
                 log(0, `用户数据更新失败！ ${err}`);
                 resolve(false);
+                
+            } else {
+                log(3, `用户数据更新！！`);
+                resolve(doc.id);
             }
+        });
+        
+    } else {
+        log(3, `创建用户！！`);
+        let createUser = new UserModel({ // 创建用户
+            userId: userId
+        });
 
-            log(3, `用户数据更新！！`);
-            resolve(doc.id);
+        createUser.save(err => { // 保存数据
+            if (err) { // 用户创建失败！
+                log(1, `用户创建失败！ ${err}`);
+                resolve(false);
+                
+            } else {
+                log(3, `用户创建成功！！`);
+                resolve(createUser.id);
+            }
         });
     }
-
-    log(3, `创建用户！！`);
-    let createUser = new UserModel({ // 创建用户
-        userId: userId
-    });
-
-    createUser.save(err => { // 保存数据
-        if (err) { // 用户创建失败！
-            log(1, `用户创建失败！ ${err}`);
-            resolve(false);
-        }
-
-        log(3, `用户创建成功！！`);
-        resolve(createUser.id);
-    });
 }
 
 
@@ -51,10 +54,10 @@ let userCreate = ctx => {
             if (err) { // 查询用户出错！！
                 log(1, `查询用户出错！！ ${err}`);
                 resolve(false);
+                
+            } else { // 数据库操作
+                dataProcessing(doc, userId, resolve, reject);
             }
-
-            // 数据库操作
-            dataProcessing(doc, userId, resolve, reject);
         });          
 
     });
