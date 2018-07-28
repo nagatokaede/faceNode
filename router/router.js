@@ -116,6 +116,10 @@ mergeface.post('/', async ctx => {
     // post 请求测试
     ctx.body = await upload(ctx, async err => {
         let upData = await detect(ctx);
+        if (upData.msg) { // 存在错误
+            return upData
+        }
+        
         return await merge(ctx, upData)
     });
     logPath(ctx, 'POST');
