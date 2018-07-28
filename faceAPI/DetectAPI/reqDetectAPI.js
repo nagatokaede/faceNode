@@ -38,11 +38,11 @@ let reqDetectAPI = (path) => {
         // 回调函数返回信息并调用处理方法
         const req = https.request(options, (res) => {
             let data = '';
-            log(4, `状态码：\nres.statusCode`);
-            log(4, `请求头：\nres.headers`);
+            log(4, `状态码：\n${res.statusCode}`);
+            log(4, `请求头：\n${res.headers}`);
             res.setEncoding('utf8');
             res.on('data', (chunk) => {
-                log(4, `响应主体 +1`);
+                process.stdout.write("=");
                 data += chunk;
             });
 
@@ -54,22 +54,21 @@ let reqDetectAPI = (path) => {
                 if (dataObj.error_message) {
                     log(0, `人脸识别请求发生错误！`);
                     resolve(dataObj);
-                } 
-
-                if (!dataObj.faces[0]) {
+                    
+                } else if (!dataObj.faces[0]) {
                     log(1, `上传图像中未能找到人脸信息!`);
                     resolve(false);
+                    
+                } else { // 成功请求并返回人脸信息
+                    resolve(dataObj.faces[0]);
                 }
-
-                // 成功请求并返回人脸信息
-                resolve(dataObj.faces[0]);
                 
             });
         });
 
         req.on('error', (e) => {
             console.error(`请求遇到问题: ${e.message}`);
-            reject(e);
+            resolve(false);
         });
 
         // 写入数据到请求主体
