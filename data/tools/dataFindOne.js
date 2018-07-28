@@ -15,16 +15,15 @@ let UpFilesInfoFindOne = (imgId) => {
             if (err) { // 数据查询失败
                 log(1, `数据查询失败：\n${err}`);
                 resolve(false);
-            } 
-
-            if (!docs) { // imgId 不存在
+                
+            } else if (!docs) { // imgId 不存在
                 log(1, `图像数据查询 imgId: ${imgId} 不存在`);
                 resolve(false);
+                
+            } else { // 查询数据成功
+                dir(docs._doc, `数据查询结果`);
+                resolve(docs._doc);
             }
-
-            // 查询数据成功
-            dir(docs._doc, `数据查询结果`);
-            resolve(docs._doc);
         });
     });
 }
@@ -36,16 +35,15 @@ let UserFindOne = (userId) => {
             if (err) { // 数据查询失败
                 log(1, `用户查询失败：\n${err}`);
                 resolve(false);
-            } 
-
-            if (!docs) { // userId 不存在
+                
+            } else if (!docs) { // userId 不存在
                 log(1, `用户数据查询 userId: ${userId} 不存在`);
                 resolve(false);
+                
+            } else { // 查询数据成功
+                dir(docs._doc, `数据查询结果`);
+                resolve(docs._doc);
             }
-
-            // 查询数据成功
-            dir(docs._doc, `数据查询结果`);
-            resolve(docs._doc);
         });
     });
 }
