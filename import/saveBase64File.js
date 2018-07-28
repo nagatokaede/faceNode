@@ -25,13 +25,14 @@ let saveFun = (ctx) => {
             if (err) {
                 log(0, `存储 base64 图片失败！ ${err}`);
                 resolve(false);
-            } 
-            
-            resolve({
-                "filename": filename, 
-                "path": imgPath,
-                "mimetype": "image/jpeg"
-            });
+                
+            } else { 
+                resolve({
+                    "filename": filename, 
+                    "path": imgPath,
+                    "mimetype": "image/jpeg"
+                });
+            }
         });
     });
 }
